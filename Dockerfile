@@ -7,16 +7,12 @@
 
 
 
+FROM nginx:1.25-alpine
 
-FROM python:3.12-slim
+# Serve a simple test page
+RUN echo "<h1>Bubble-Nginx Test Success</h1>" > /usr/share/nginx/html/index.html
 
-# Create and switch to a non-root user
-RUN useradd -m appuser && \
-    mkdir -p /app && \
-    chown appuser:appuser /app
-WORKDIR /app
-USER appuser
+# Nginx already listens on 0.0.0.0:80 by default
+EXPOSE 80
 
-# Server must listen on 0.0.0.0 (not just localhost)
-# Use PORT environment variable (Bubble provides this)
-CMD ["sh", "-c", "python -m http.server ${PORT:-8000} --bind 0.0.0.0"]
+# No need for PORT env var since Nginx uses fixed port 80
