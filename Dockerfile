@@ -6,13 +6,25 @@
 #CMD ["python3", "-m", "http.server", "8000"]
 
 
-
 FROM nginx:1.25-alpine
 
-# Serve a simple test page
-RUN echo "<h1>Bubble-Nginx Test Success</h1>" > /usr/share/nginx/html/index.html
+# 1. Create healthcheck endpoint
+RUN echo "OK" > /usr/share/nginx/html/healthcheck
 
-# Nginx already listens on 0.0.0.0:80 by default
+# 2. Override default config with healthcheck endpoint
+RUN echo 'server { \
+    listen 80; \
+    location = /healthcheck { \
+      return 200 "OK"; \
+      add_header Content-Type text/plain; \
+    } \
+    location / { \
+      root /usr/share/nginx/html; \
+    } \
+  }' > /etc/nginx/conf.d/default.conf
+
+# 3. Container-level health verification
+HEALTHCHECK --interval=5s --timeout=3s \
+  CMD curl -f http://localhost/healthcheck || exit 1
+
 EXPOSE 80
-
-# No need for PORT env var since Nginx uses fixed port 80
