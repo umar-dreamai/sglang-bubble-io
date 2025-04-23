@@ -12,6 +12,7 @@ markdown>=3.4.0
 matplotlib
 myst-parser
 nbconvert
+transformers
 nbsphinx
 pandoc
 pillow
