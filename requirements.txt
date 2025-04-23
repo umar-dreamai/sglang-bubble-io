@@ -2,6 +2,8 @@ Flask==2.3.2
 gunicorn==21.2.0
 sglang==0.4.5.post1
 torch
+torchvision
+torchaudio
 ipykernel
 ipywidgets
 jupyter_client
