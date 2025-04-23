@@ -9,6 +9,7 @@ torchaudio
 ipykernel
 ipywidgets
 jupyter_client
+decord
 markdown>=3.4.0
 matplotlib
 myst-parser
